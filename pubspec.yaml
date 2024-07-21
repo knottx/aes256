@@ -1,0 +1,18 @@
+name: aes256
+description: AES-256 encryption and decryption using PBKDF2 + AES-GCM.
+version: 2.1.2
+homepage: https://knottx.github.io/aes256
+repository: https://github.com/knottx/aes256
+issue_tracker: https://github.com/knottx/aes256/issues
+topics: [aes, aes256, aes-gcm, gcm, pbkdf2]
+funding: [https://github.com/sponsors/knottx]
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  cryptography: ">=2.7.0 <3.0.0"
+
+dev_dependencies:
+  lints: ^6.0.0
+  test: ^1.26.3
