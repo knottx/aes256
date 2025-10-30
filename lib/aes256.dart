@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:crypto/crypto.dart' hide Hmac;
 import 'package:cryptography/cryptography.dart';
+import 'package:encrypt/encrypt.dart';
 
 /// A utility class for AES-256 encryption and decryption using PBKDF2 + AES-GCM.
 /// Payload layout:
@@ -33,7 +35,7 @@ class Aes256 {
   static const _nonceLen = 12;
 
   /// crank this as needed for your perf/security
-  static const _iterations = 600000;
+  static const _iterations = 100000;
 
   static final _rand = Random.secure();
   static final _kdf = Pbkdf2(
@@ -100,8 +102,10 @@ class Aes256 {
       throw ArgumentError('Ciphertext too short.');
     }
 
-    final hdrStr =
-        utf8.decode(bytes.sublist(0, _hdr.length), allowMalformed: false);
+    final hdrStr = utf8.decode(
+      bytes.sublist(0, _hdr.length),
+      allowMalformed: false,
+    );
     if (hdrStr != _hdr) {
       throw ArgumentError('Invalid header. Expected "\$._hdr".');
     }
@@ -146,5 +150,77 @@ class Aes256 {
     );
 
     return utf8.decode(clear);
+  }
+
+  /// Decrypts a base64 encoded string using AES-256 with the given passphrase.
+  ///
+  /// This method decrypts the provided `encrypted` string, which must be the result
+  /// of the `encrypt` method. It extracts the salt and encrypted data, derives
+  /// the key and IV from the passphrase and salt, and then decrypts the data.
+  ///
+  /// Parameters:
+  /// - `encrypted`: The base64 encoded string containing the encrypted data and salt.
+  /// - `passphrase`: The passphrase used to derive the key and IV.
+  ///
+  /// Returns:
+  /// - The decrypted string if decryption is successful, or `null` if the decryption
+  ///   fails (e.g., if the encrypted data does not start with 'Salted__').
+  ///
+  /// Throws:
+  /// - An error if decryption fails.
+  static Future<String> decryptLegacy({
+    required String encrypted,
+    required String passphrase,
+  }) async {
+    final enc = base64.decode(encrypted);
+    final saltedPrefix = utf8.decode(enc.sublist(0, 8));
+
+    if (saltedPrefix != 'Salted__') {
+      return decrypt(
+        encrypted: encrypted,
+        passphrase: passphrase,
+      );
+    }
+
+    final salt = enc.sublist(8, 16);
+    final text = enc.sublist(16);
+    final salted = _generateSaltedKeyAndIv(
+      passphrase: passphrase,
+      salt: salt,
+    );
+
+    final key = Key(Uint8List.fromList(salted.sublist(0, 32)));
+    final iv = IV(Uint8List.fromList(salted.sublist(32, 48)));
+    final encryptor = Encrypter(AES(key, mode: AESMode.cbc));
+
+    return encryptor.decrypt(Encrypted(Uint8List.fromList(text)), iv: iv);
+  }
+
+  /// Generates a salted key and initialization vector (IV) from a passphrase and salt.
+  ///
+  /// This method derives a key and IV for AES-256 encryption from the given
+  /// passphrase and salt using the MD5 hash function.
+  ///
+  /// Parameters:
+  /// - `passphrase`: The passphrase used to generate the key.
+  /// - `salt`: The salt used in key and IV generation.
+  ///
+  /// Returns:
+  /// - A list of integers representing the salted key and IV.
+  static List<int> _generateSaltedKeyAndIv({
+    required String passphrase,
+    required List<int> salt,
+  }) {
+    final pass = utf8.encode(passphrase);
+    var dx = <int>[];
+    var salted = <int>[];
+
+    while (salted.length < 48) {
+      final data = dx + pass + salt;
+      dx = md5.convert(data).bytes;
+      salted.addAll(dx);
+    }
+
+    return salted;
   }
 }

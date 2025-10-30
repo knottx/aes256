@@ -1,3 +1,7 @@
+## 2.1.3
+
+- Update iterations 100,000
+
 ## 2.1.2
 
 - Update example

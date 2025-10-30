@@ -1,6 +1,10 @@
 # AES256
 
-AES-256 encryption and decryption using PBKDF2 + AES-GCM
+AES-256-GCM encryption and decryption
+
+- Hash Algo: SHA256
+- KDF: PBKDF2
+- Iterations: 100,000
 
 Try on [Demo](https://knottx.github.io/aes256)
 
