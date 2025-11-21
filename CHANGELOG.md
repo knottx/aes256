@@ -1,3 +1,9 @@
+## 2.2.0
+
+- Updated payload structure to follow a fully explicit sequence:
+  salt(16) + nonce(12) + ciphertext + tag
+  Improved cross-language compatibility with libraries using the same payload
+
 ## 2.1.3
 
 - Update iterations 100,000

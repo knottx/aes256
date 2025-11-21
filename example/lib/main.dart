@@ -155,10 +155,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       _error!,
                       style: const TextStyle(color: Colors.red),
                     ),
-                  const Text(
-                    'Note: Uses AES-256-GCM with PBKDF2-HMAC-SHA256. '
-                    'The output includes header+salt+nonce+ciphertext+auth tag.',
-                    style: TextStyle(fontSize: 12),
+                  Text(
+                    [
+                      'Note: Uses AES-256-GCM with PBKDF2-HMAC-SHA256.',
+                      'The output includes salt + nonce + ciphertext + tag.',
+                    ].join('\n'),
+                    style: const TextStyle(fontSize: 12),
                   ),
                 ],
               ),
