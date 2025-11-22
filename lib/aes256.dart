@@ -14,15 +14,15 @@ class Aes256 {
   Aes256._();
 
   /// 128-bit salt
-  static const _saltLength = 16;
+  static const int _saltLength = 16;
 
   /// 96-bit nonce (recommended for GCM)
-  static const _nonceLength = 12;
+  static const int _nonceLength = 12;
 
   /// crank this as needed for your perf/security
-  static const _iterations = 100000;
+  static const int _iterations = 100000;
 
-  static final _aes = AesGcm.with256bits();
+  static final AesGcm _aes = AesGcm.with256bits();
 
   static List<int> _randomBytes(int n) {
     return List<int>.generate(

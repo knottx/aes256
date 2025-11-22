@@ -1,3 +1,7 @@
+## 2.2.1
+
+- Update example
+
 ## 2.2.0
 
 - Updated payload structure to follow a fully explicit sequence:

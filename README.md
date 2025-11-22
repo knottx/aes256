@@ -14,7 +14,7 @@ Designed with strong defaults, clean APIs, and seamless usability across mobile,
 - **100,000 iterations** — Secure default against brute-force attacks
 - **Random salt & nonce** — Automatically handled
 - **Stateless API** — Easy to integrate into any architecture
-- **Pure Dart** — Works on Flutter, Dart VM, and Web
+- **Pure Dart codebase** — Works on Flutter, Dart VM, Server, and Web (with optional native acceleration on Flutter)
 
 ---
 
@@ -106,4 +106,4 @@ Any implementation that generates output in the same sequence will decrypt corre
 
 ### **Does it work on Flutter Web?**
 
-Yes — it is pure Dart with no native bindings.
+Yes, on Flutter Web the library automatically uses the pure Dart implementation from package:cryptography, since native acceleration isn’t available in browsers. All features work the same, and the output remains fully compatible with other platforms.
