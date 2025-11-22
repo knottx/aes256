@@ -1,3 +1,7 @@
+## 2.2.2
+
+- Update minimum sdk.
+
 ## 2.2.1
 
 - Update example
