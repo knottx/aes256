@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <!--
     If you are serving your web app in a path other than the root, change the
@@ -18,7 +18,63 @@
 
     <meta charset="UTF-8" />
     <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
-    <meta name="description" content="Encrypt and decrypt text in your browser with AES-256-GCM and PBKDF2." />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>AES-256 Playground – Encrypt &amp; Decrypt Text Online (AES-256-GCM)</title>
+    <meta
+      name="description"
+      content="Free online AES-256 encryption tool. Encrypt and decrypt text with a passphrase using AES-256-GCM and PBKDF2-HMAC-SHA256. Runs entirely in your browser; nothing is sent to a server."
+    />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://knottx.dev/aes256/" />
+
+    <!-- Open Graph / social previews -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="AES-256 Playground" />
+    <meta property="og:title" content="AES-256 Playground – Encrypt & Decrypt Text in Your Browser" />
+    <meta
+      property="og:description"
+      content="Encrypt and decrypt text with AES-256-GCM and PBKDF2. Everything runs locally in your browser."
+    />
+    <meta property="og:url" content="https://knottx.dev/aes256/" />
+    <meta property="og:image" content="https://knottx.dev/aes256/icons/Icon-512.png" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta property="og:image:alt" content="AES-256 Playground icon" />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="AES-256 Playground" />
+    <meta
+      name="twitter:description"
+      content="Encrypt and decrypt text with AES-256-GCM and PBKDF2, entirely in your browser."
+    />
+    <meta name="twitter:image" content="https://knottx.dev/aes256/icons/Icon-512.png" />
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "AES-256 Playground",
+        "url": "https://knottx.dev/aes256/",
+        "description": "Encrypt and decrypt text with a passphrase using AES-256-GCM and PBKDF2-HMAC-SHA256. Runs entirely in the browser.",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript and a modern browser.",
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "featureList": [
+          "AES-256-GCM authenticated encryption",
+          "PBKDF2-HMAC-SHA256 key derivation",
+          "Base64 ciphertext output",
+          "Runs locally; no data leaves the browser"
+        ],
+        "sameAs": [
+          "https://pub.dev/packages/aes256",
+          "https://github.com/knottx/aes256"
+        ]
+      }
+    </script>
 
     <!-- iOS meta tags & icons -->
     <meta name="mobile-web-app-capable" content="yes" />
@@ -29,17 +85,76 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png" />
 
-    <title>AES-256 Playground</title>
     <link rel="manifest" href="manifest.json" />
     <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#fbf8fc" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#131316" media="(prefers-color-scheme: dark)" />
+
+    <!-- Flutter fetches CanvasKit and fallback fonts from Google's CDN. -->
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <style>
-      body { background-color: #fbf8fc; }
+      body {
+        margin: 0;
+        background-color: #fbf8fc;
+        color: #1b1b1f;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+      #seo {
+        box-sizing: border-box;
+        max-width: 1040px;
+        margin: 0 auto;
+        padding: 32px 20px;
+        line-height: 1.5;
+      }
+      #seo h1 { font-size: 24px; font-weight: 400; margin: 0 0 4px; }
+      #seo p, #seo li { color: #46464f; }
+      #seo a { color: #3f5aa8; }
       @media (prefers-color-scheme: dark) {
-        body { background-color: #131316; }
+        body { background-color: #131316; color: #e4e1e6; }
+        #seo p, #seo li { color: #c7c5d0; }
+        #seo a { color: #b4c4ff; }
       }
     </style>
   </head>
   <body>
+    <!--
+      Static content for crawlers, link previews and no-JS visitors. It also
+      serves as the loading screen and is removed once Flutter paints its first
+      frame; after that, Flutter's semantics tree exposes the same text.
+    -->
+    <main id="seo">
+      <h1>AES-256 Playground</h1>
+      <p>
+        Encrypt and decrypt text online with AES-256-GCM and a
+        PBKDF2-HMAC-SHA256 key derived from your passphrase. Everything runs
+        locally in your browser and stays in memory, so nothing leaves this
+        page.
+      </p>
+      <h2>How it works</h2>
+      <ul>
+        <li>Encrypt: enter plaintext and a passphrase to get Base64 ciphertext.</li>
+        <li>Decrypt: paste the Base64 ciphertext and the same passphrase to recover the text.</li>
+        <li>Authenticated encryption: a wrong passphrase or modified ciphertext is detected.</li>
+      </ul>
+      <p>
+        This is the live demo for
+        <a href="https://pub.dev/packages/aes256">package:aes256 on pub.dev</a>
+        (<a href="https://github.com/knottx/aes256">source on GitHub</a>), a
+        Dart and Flutter library for AES-256 encryption.
+      </p>
+      <noscript>
+        <p><strong>JavaScript is required to run the AES-256 Playground.</strong></p>
+      </noscript>
+    </main>
+    <script>
+      window.addEventListener(
+        "flutter-first-frame",
+        () => document.getElementById("seo")?.remove(),
+        { once: true }
+      );
+    </script>
     <script src="flutter_bootstrap.js" async></script>
   </body>
 </html>

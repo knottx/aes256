@@ -1,11 +1,22 @@
 import 'package:aes256/aes256.dart';
 import 'package:cryptography/cryptography.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:url_launcher/link.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  if (kIsWeb) {
+    // Builds the DOM semantics tree up front instead of waiting for a screen
+    // reader, so crawlers that render JavaScript can read the page's text.
+    SemanticsBinding.instance.ensureSemantics();
+  }
   runApp(const PlaygroundApp());
 }
+
+final _packageUri = Uri.parse('https://pub.dev/packages/aes256');
 
 /// The single accent color; everything else stays neutral.
 const _accent = Color(0xFF3F5AA8);
@@ -211,12 +222,30 @@ class _PlaygroundPageState extends State<PlaygroundPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 4,
       children: [
-        Text('AES-256 Playground', style: textTheme.headlineSmall),
+        // Rendered as an <h1> on the web.
+        Semantics(
+          headingLevel: 1,
+          child: Text('AES-256 Playground', style: textTheme.headlineSmall),
+        ),
         Text(
           'AES-256-GCM with a PBKDF2-HMAC-SHA256 key. '
           'Nothing leaves this page.',
           style: textTheme.bodyMedium?.copyWith(
             color: colorScheme.onSurfaceVariant,
+          ),
+        ),
+        // A real link (an <a> on the web) to the package this page demos.
+        Link(
+          uri: _packageUri,
+          target: LinkTarget.blank,
+          builder: (context, followLink) => TextButton.icon(
+            onPressed: followLink,
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.zero,
+              visualDensity: VisualDensity.compact,
+            ),
+            icon: const Icon(Icons.open_in_new, size: 16),
+            label: const Text('package:aes256 on pub.dev'),
           ),
         ),
       ],
