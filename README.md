@@ -1,9 +1,9 @@
 # 🔐 AES256
 
-A lightweight, modern, and secure **AES-256-GCM** encryption library for Dart & Flutter.  
-Designed with strong defaults, clean APIs, and seamless usability across mobile, web, and server environments.
+A lightweight, modern, and secure **AES-256-GCM** encryption library for Flutter.  
+Designed with strong defaults, clean APIs, and the same output on every platform.
 
-👉 **Live Demo:** [https://knottx.dev/aes256](https://knottx.github.io/aes256)
+👉 **Live Demo:** [https://knottx.dev/aes256/](https://knottx.dev/aes256/)
 
 ---
 
@@ -14,7 +14,7 @@ Designed with strong defaults, clean APIs, and seamless usability across mobile,
 - **100,000 iterations** — Secure default against brute-force attacks
 - **Random salt & nonce** — Automatically handled
 - **Stateless API** — Easy to integrate into any architecture
-- **Pure Dart codebase** — Works on Flutter, Dart VM, Server, and Web (with optional native acceleration on Flutter)
+- **Every Flutter platform** — Native acceleration on Android, iOS, and macOS; Web Crypto in browsers; pure Dart on Windows and Linux
 
 ---
 
@@ -23,31 +23,31 @@ Designed with strong defaults, clean APIs, and seamless usability across mobile,
 ```dart
 import 'package:aes256/aes256.dart';
 
-void main() async {
-  // Encrypt
-  final encrypted = await Aes256.encrypt(
-    text: 'Hello world',
-    passphrase: 'my-passphrase',
-  );
+final encrypted = await Aes256.encrypt(
+  text: 'Hello world',
+  passphrase: 'my-passphrase',
+);
 
-  // Decrypt
-  final decrypted = await Aes256.decrypt(
-    encrypted: encrypted,
-    passphrase: 'my-passphrase',
-  );
-
-  print(decrypted); // Hello world
-}
+final decrypted = await Aes256.decrypt(
+  encrypted: encrypted,
+  passphrase: 'my-passphrase',
+);
 ```
+
+`decrypt` throws:
+
+- `SecretBoxAuthenticationError` (from `package:cryptography`) for a wrong passphrase or modified ciphertext
+- `FormatException` for input that isn't valid Base64
+- `ArgumentError` for a payload too short to contain a salt, nonce, and tag
 
 ---
 
 ## 🔒 How It Works
 
-AES256 outputs a structured, self-contained binary payload:
+AES256 outputs Base64 (standard alphabet, padded) of a self-contained binary payload:
 
 ```text
-salt(16) + nonce(12) + ciphertext + tag
+salt(16) + nonce(12) + ciphertext + tag(16)
 ```
 
 ### Security Parameters
@@ -68,12 +68,18 @@ Salt and nonce do **not** provide secrecy by themselves — they ensure uniquene
 The **passphrase-derived key** is the only secret.  
 Exposing salt/nonce does not weaken the encryption.
 
+### Performance
+
+Key derivation is deliberately slow and accounts for almost all of the time spent in `encrypt` and `decrypt`. On an Apple M2 Pro, one call takes about 9 ms in Chrome (Web Crypto) and about 0.4 s with the pure Dart implementation used on Windows, Linux, and in tests. The pure Dart version briefly yields to the event loop so the UI stays responsive.
+
 ---
 
 ## 🧪 Example Output (Base64)
 
+`Hello World!` encrypted with the passphrase `passphrase`:
+
 ```text
-QTI1NkdDTQEBEBcAAAAAAAAAACZ1FqvX…(ciphertext)…Lk5h0nA=
+0F9DWJW8a+cWCSXF80S+l52+MPA6xj6XVTUyf9ItcZspDLo+hOPTG0V6kQTecBLyq134OQnVr2o=
 ```
 
 ---
@@ -94,16 +100,18 @@ Yes — as long as the passphrase remains secret.
 
 ### **Can I decrypt data encrypted in another language?**
 
-Yes — as long as the other implementation uses the same payload structure and AES-256-GCM + PBKDF2-SHA256 parameters.
-
-This library follows a clean and predictable binary format:
+Yes — as long as the other implementation uses the same payload structure and AES-256-GCM + PBKDF2-HMAC-SHA256 parameters (100,000 iterations, 32-byte key, UTF-8 passphrase and plaintext).
 
 ```text
-salt(16) + nonce(12) + ciphertext + tag
+salt(16) + nonce(12) + ciphertext + tag(16)
 ```
 
-Any implementation that generates output in the same sequence will decrypt correctly.
+For example, Node.js `crypto.pbkdf2Sync` with `createDecipheriv('aes-256-gcm', ...)` decrypts this package's output.
 
 ### **Does it work on Flutter Web?**
 
-Yes, on Flutter Web the library automatically uses the pure Dart implementation from package:cryptography, since native acceleration isn’t available in browsers. All features work the same, and the output remains fully compatible with other platforms.
+Yes. In browsers the library uses the Web Crypto API, which needs a secure context (HTTPS or `localhost`); otherwise it falls back to the pure Dart implementation from `package:cryptography`. The output is identical on every platform.
+
+### **Can I use it in a Dart-only (non-Flutter) project?**
+
+Not currently. The package depends on `cryptography_flutter` for native acceleration, so `dart pub get` fails outside a Flutter project ("requires the Flutter SDK"). In a server or CLI app, use `package:cryptography` directly with the same parameters.

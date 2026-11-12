@@ -40,3 +40,11 @@ analyzer:
     unrelated_type_equality_checks: error
     unused_element: error
     unused_local_variable: error
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**

@@ -1,18 +1,22 @@
 name: example
-description: "A new Flutter project."
+description: "AES-256 Playground: the live demo for package:aes256."
 publish_to: "none"
 
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.9.2
+  # package:material_ui needs Dart 3.13 / Flutter 3.47. The aes256 package
+  # itself still supports Dart 3.3.
+  sdk: ^3.13.0
+  flutter: ">=3.47.0"
 
 dependencies:
   flutter:
     sdk: flutter
   aes256:
     path: ../
-  cupertino_icons: ^1.0.8
+  cryptography: ^2.9.0
+  material_ui: ^1.11.0
 
 dev_dependencies:
   flutter_test:
@@ -21,3 +25,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  # Bundled so ciphertext is monospace on the web, where system fonts
+  # aren't available. Apache-2.0, see fonts/LICENSE.txt.
+  fonts:
+    - family: RobotoMono
+      fonts:
+        - asset: fonts/RobotoMono-Regular.ttf

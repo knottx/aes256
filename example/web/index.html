@@ -14,25 +14,32 @@
     This is a placeholder for base href that will be replaced by the value of
     the `--base-href` argument provided to `flutter build`.
   -->
-    <!-- <base href="$FLUTTER_BASE_HREF"> -->
+    <base href="$FLUTTER_BASE_HREF" />
 
     <meta charset="UTF-8" />
     <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
-    <meta name="description" content="A new Flutter project." />
+    <meta name="description" content="Encrypt and decrypt text in your browser with AES-256-GCM and PBKDF2." />
 
     <!-- iOS meta tags & icons -->
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <meta name="apple-mobile-web-app-title" content="example" />
+    <meta name="apple-mobile-web-app-title" content="AES-256" />
     <link rel="apple-touch-icon" href="icons/Icon-192.png" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png" />
 
-    <title>example</title>
+    <title>AES-256 Playground</title>
     <link rel="manifest" href="manifest.json" />
+    <meta name="color-scheme" content="light dark" />
+    <style>
+      body { background-color: #fbf8fc; }
+      @media (prefers-color-scheme: dark) {
+        body { background-color: #131316; }
+      }
+    </style>
   </head>
-  <body style="background-color: #131218">
+  <body>
     <script src="flutter_bootstrap.js" async></script>
   </body>
 </html>

@@ -1,16 +1,15 @@
-# example
+# AES-256 Playground
 
-A new Flutter project.
+The live demo for [`package:aes256`](https://pub.dev/packages/aes256):
+<https://knottx.dev/aes256/>
 
-## Getting Started
+Encrypt text with a passphrase, copy the Base64 result, or paste ciphertext to
+decrypt it. Everything runs locally and stays in memory.
 
-This project is a starting point for a Flutter application.
+```sh
+flutter run -d chrome
+flutter build web --release --base-href /aes256/
+```
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Needs Flutter 3.47 or later (for `package:material_ui`). The `aes256` package
+itself supports older SDKs.

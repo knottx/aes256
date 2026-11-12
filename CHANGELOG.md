@@ -1,3 +1,21 @@
+## 2.2.3
+
+- Fix: ciphertext of an empty string can now be decrypted. Previously
+  `decrypt` rejected it as "Payload truncated."
+- Document the exceptions `decrypt` throws. Behavior, defaults, and the
+  `salt(16) + nonce(12) + ciphertext + tag(16)` format are unchanged; output
+  stays compatible with earlier 2.2.x releases in both directions, except
+  that 2.2.2 and earlier still can't decrypt an empty string.
+- Internal cleanup: one `Random.secure()` instance and a single preallocated
+  output buffer. No measurable performance change, since PBKDF2 dominates.
+- Correct the `flutter` lower bound to 3.19.0, the first release with Dart
+  3.3. This matches what the existing constraints already required.
+- Tests: fixtures from 2.2.2, Unicode, empty and large payloads, tampering,
+  and malformed input, on the VM and in Chrome.
+- README: fix the demo link, platform notes, and example output.
+- Example: rebuilt as a single-screen AES-256 playground (Material 3, light and
+  dark themes, responsive layout).
+
 ## 2.2.2
 
 - Update minimum sdk.

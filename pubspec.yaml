@@ -1,7 +1,7 @@
 name: aes256
 description: AES-256 encryption and decryption using PBKDF2 + AES-GCM.
-version: 2.2.2
-homepage: https://knottx.github.io/aes256
+version: 2.2.3
+homepage: https://knottx.dev/aes256/
 repository: https://github.com/knottx/aes256
 issue_tracker: https://github.com/knottx/aes256/issues
 topics: [aes, aes256, aes-gcm, gcm, pbkdf2]
@@ -9,7 +9,7 @@ funding: [https://github.com/sponsors/knottx]
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
-  flutter: ">=3.3.0"
+  flutter: ">=3.19.0"
 
 dependencies:
   cryptography: ">=2.9.0 <3.0.0"

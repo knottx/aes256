@@ -1,11 +1,11 @@
 {
-    "name": "example",
-    "short_name": "example",
+    "name": "AES-256 Playground",
+    "short_name": "AES-256",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#131316",
+    "theme_color": "#3F5AA8",
+    "description": "Encrypt and decrypt text in your browser with AES-256-GCM and PBKDF2.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
