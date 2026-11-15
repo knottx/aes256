@@ -1,3 +1,7 @@
+## 2.2.4
+
+- Update live demo link
+
 ## 2.2.3
 
 - Fix: ciphertext of an empty string can now be decrypted. Previously

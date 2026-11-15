@@ -3,7 +3,7 @@
 A lightweight, modern, and secure **AES-256-GCM** encryption library for Flutter.  
 Designed with strong defaults, clean APIs, and the same output on every platform.
 
-👉 **Live Demo:** [https://knottx.dev/aes256/](https://knottx.dev/aes256/)
+👉 **Live Demo:** [https://knottx.github.io/aes256/](https://knottx.github.io/aes256/)
 
 ---
 
